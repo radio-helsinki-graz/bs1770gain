@@ -89,6 +89,7 @@ int bs1770gain_tree_analyze(tree_t *tree, const char *odirname,
 
   while (0<tree->vmt->next(tree,options)) {
     switch (tree->state) {
+    case BS1770GAIN_TREE_STATE_STDIN:
     case BS1770GAIN_TREE_STATE_REG:
       if (bs1770gain_tree_track(tree,album,options)<0) {
         DMESSAGE("initializing track");
@@ -395,6 +396,14 @@ int bs1770gain_tree_cli_next(bs1770gain_tree_t *tree,
 
   while (tree->cli.optind<tree->cli.argc) {
     path=tree->cli.argv[tree->cli.optind++];
+    if(1==strlen(path) && '-' == path[0]) {
+      tree->state = BS1770GAIN_TREE_STATE_STDIN;
+      tree->path="pipe:0";
+      tree->ai=options->audio;
+      tree->vi=options->video;
+      ++tree->root->cli.count;
+      return tree->state;
+    }
 
     if (0<bs1770gain_tree_stat(tree,path,options))
       return tree->state;

@@ -185,6 +185,7 @@ struct bs1770gain_tag {
 #define BS1770GAIN_TREE_STATE_INV   0
 #define BS1770GAIN_TREE_STATE_REG   1
 #define BS1770GAIN_TREE_STATE_DIR   2
+#define BS1770GAIN_TREE_STATE_STDIN 3
 
 struct bs1770gain_tree_vmt {
   void (*cleanup)(bs1770gain_tree_t *tree);
